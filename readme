@@ -1,0 +1,155 @@
+# ChIP-seq Analysis: FOXA1 and ELF3 Binding in Pancreatic Cancer Cells
+
+## Overview
+This analysis examines the effects of KLF5 knockout on FOXA1 and ELF3 transcription factor binding in CFPAC1 pancreatic cancer cells using ChIP-seq data.
+
+## Experimental Design
+- **Cell Line**: CFPAC1 (pancreatic cancer)
+- **Conditions**: 
+  - Control (wild-type KLF5)
+  - KLF5 knockout (crKLF5)
+- **Transcription Factors**: FOXA1 and ELF3
+- **Reference Genome**: hg19 (Human)
+
+## Dataset
+Data from GEO series analyzing KLF5-dependent transcription factor binding:
+
+| Sample ID | Description | File |
+|-----------|-------------|------|
+| GSM1919987 | Control FOXA1 ChIP-seq | `GSM1919987_CFPAC1.wtKLF5_FOXA1_vs_INPUT.CAPAN1_peaks.bed` |
+| GSM1919985 | KLF5-KO FOXA1 ChIP-seq | `GSM1919985_CFPAC1.crKLF5_FOXA1_vs_INPUT.CAPAN1_peaks.bed` |
+| GSM1919986 | Control ELF3 ChIP-seq | `GSM1919986_CFPAC1.wtKLF5.ELF3_vs_INPUT.CAPAN1_peaks.bed` |
+| GSM1919984 | KLF5-KO ELF3 ChIP-seq | `GSM1919984_CFPAC1.crKLF5.ELF3_vs_INPUT.CAPAN1_peaks.bed` |
+
+## Analysis Workflow
+
+### 1. Peak Loading and Quality Control
+- Reads BED format peak files into GRanges objects
+- Inspects peak characteristics for each sample
+- Validates chromosome coverage
+
+### 2. Peak Annotation
+- Annotates peaks relative to genomic features using ChIPseeker
+- Uses UCSC hg19 known gene annotations (`TxDb.Hsapiens.UCSC.hg19.knownGene`)
+- Classifies peaks by genomic region (promoter, exon, intron, intergenic)
+
+### 3. Comparative Analysis
+- **Unique Peak Identification**: Identifies condition-specific binding sites
+- **Genomic Distribution**: Compares peak distribution across genomic features
+- **TSS Distance Analysis**: Examines proximity of peaks to transcription start sites
+- **Chromosome Coverage**: Maps peaks across chromosomes
+
+### 4. Visualizations
+- Annotation bar plots showing genomic feature distribution
+- TSS distance distribution plots
+- Chromosome coverage maps
+- Comparative plots for KO vs Control conditions
+
+## Key Analyses
+
+### FOXA1 Analysis
+Compares FOXA1 binding patterns between:
+- Control (wtKLF5) condition
+- KLF5 knockout (crKLF5) condition
+
+### ELF3 Analysis
+Compares ELF3 binding patterns between:
+- Control (wtKLF5) condition
+- KLF5 knockout (crKLF5) condition
+
+### Cross-Factor Comparison
+Examines differences in how KLF5 knockout affects FOXA1 vs ELF3 binding
+
+## Required R Packages
+```r
+# Core packages
+- ChIPseeker (>= 1.28.0)
+- TxDb.Hsapiens.UCSC.hg19.knownGene
+- clusterProfiler
+- org.Hs.eg.db
+- BiocManager
+```
+
+## Installation
+```r
+# Install BiocManager
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager", repos = "https://cran.rstudio.com/")
+
+# Install required Bioconductor packages
+BiocManager::install(c("ChIPseeker", 
+                       "TxDb.Hsapiens.UCSC.hg19.knownGene",
+                       "clusterProfiler", 
+                       "org.Hs.eg.db"), 
+                     ask=FALSE)
+```
+
+## Usage
+
+### Running the Analysis
+
+1. **Set up environment**:
+```r
+   library(ChIPseeker)
+   library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+   txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+```
+
+2. **Load peak files**:
+   - Ensure all BED files are in the working directory
+   - Files are automatically loaded into GRanges objects
+
+3. **Generate outputs**:
+   - HTML report with all visualizations
+   - Annotation tables
+   - Statistical summaries
+
+### Input File Format
+BED files should contain peak coordinates:
+```
+chr1    1000    2000    peak_1    100
+chr1    3000    4000    peak_2    150
+```
+
+## Output Files
+
+- `ChIP-seq-Analysis-Report-1.html`: Comprehensive analysis report
+- Peak annotation tables
+- Visualization plots (embedded in HTML)
+
+## Key Results
+
+The analysis identifies:
+1. **Condition-specific peaks**: Unique FOXA1/ELF3 binding sites gained or lost upon KLF5 knockout
+2. **Genomic context**: Whether peaks are enriched in promoters, enhancers, or gene bodies
+3. **TSS proximity**: Distance distribution of peaks relative to transcription start sites
+4. **Chromosomal distribution**: Genome-wide binding patterns
+
+## Biological Interpretation
+
+Results reveal how KLF5 knockout affects:
+- FOXA1 and ELF3 chromatin occupancy
+- Potential regulatory mechanisms in pancreatic cancer
+- Transcription factor cooperation/competition
+
+## System Requirements
+
+- R (>= 4.0.0)
+- Bioconductor (>= 3.13)
+- Sufficient RAM for genome-wide analyses (~4GB recommended)
+
+## Notes
+
+- Analysis uses hg19 reference genome (update to hg38 if needed)
+- Peak calling performed externally (MACS2 or similar)
+- INPUT samples used as controls in original peak calling
+
+## Author
+Sandeep (ha251948)
+
+## Date
+January 2026
+
+## References
+- ChIPseeker: Yu G, Wang LG, He QY. ChIPseeker: an R/Bioconductor package for ChIP peak annotation, comparison and visualization. Bioinformatics. 2015.
+- Original dataset: GEO accession (add GEO series number)
