@@ -1,5 +1,8 @@
 # ChIP-seq Analysis: FOXA1 and ELF3 Binding in Pancreatic Cancer Cells
 
+.html file can be accessed at https://parulkuls26.github.io/ChIpseq-analysis/
+
+
 ## Overview
 This analysis examines the effects of KLF5 knockout on FOXA1 and ELF3 transcription factor binding in CFPAC1 pancreatic cancer cells using ChIP-seq data.
 
